@@ -11,13 +11,11 @@ public class TestLes2 {
        CarDAO carDAO = factory.getCarDAO();
 
        Car car = new Car();
-        car.setMark("Lexus");
-        car.setModel("470");
-        car.setPrice(3900);
-
+        car.setMark("BMW");
+        car.setModel("X2");
+        car.setPrice(1800);
 
         carDAO.add(car);
-
 
     }
 }

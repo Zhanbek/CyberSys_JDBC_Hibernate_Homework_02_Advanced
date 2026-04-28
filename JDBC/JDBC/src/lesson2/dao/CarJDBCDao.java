@@ -3,6 +3,7 @@ package lesson2.dao;
 import lesson2.entity.Car;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CarJDBCDao implements CarDAO{
@@ -13,7 +14,7 @@ public class CarJDBCDao implements CarDAO{
         connection = getConnection();
         PreparedStatement preparedStatement = null;
 
-        try{
+        try {
             int markId = getMarkId(car.getMark(), connection);
 
             if(markId == -1){
@@ -35,41 +36,59 @@ public class CarJDBCDao implements CarDAO{
             preparedStatement.setInt(3, car.getPrice());
             preparedStatement.execute();
 
-
-
-        }catch (Exception e){
+        } catch (Exception e){
             e.printStackTrace();
         }
-
-
-
-
-
-
     }
 
 
     private int getMarkId(String markName, Connection connection) throws SQLException {
-
         PreparedStatement preparedStatement = connection.prepareStatement("select id from marks where mark = ?");
         preparedStatement.setString(1, markName);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
             return resultSet.getInt(1);
         }
-
         return -1;
     }
 
-
-
-
-
+    private String getMarkById(long id, Connection connection) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("select mark from marks where id = ?");
+        preparedStatement.setLong(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            return resultSet.getString(1);
+        }
+        return "";
+    }
 
 
     @Override
     public List<Car> getAll() {
-        return List.of();
+        List<Car> cars = new ArrayList<>();
+
+        Connection connection = null;
+        connection = getConnection();
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement("select id, mark_id, model, price from cars");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Car car = new Car();
+                car.setId(resultSet.getInt("id"));
+                long mark_id = resultSet.getLong("mark_id");
+                car.setMark(getMarkById(mark_id, connection));
+                car.setModel(resultSet.getString("model"));
+                car.setPrice(resultSet.getInt("price"));
+                cars.add(car);
+            }
+            return cars;
+        } catch (Exception e) {
+
+        }
+
+        return cars;
     }
 
     @Override
