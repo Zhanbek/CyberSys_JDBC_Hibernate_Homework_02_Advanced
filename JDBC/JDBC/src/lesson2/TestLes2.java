@@ -14,10 +14,13 @@ public class TestLes2 {
 
        Car car = new Car();
         car.setMark("BMW");
-        car.setModel("X3");
-        car.setPrice(3800);
+        car.setModel("X5");
+        car.setPrice(5800);
 
         carDAO.add(car);
+
+        System.out.println("Car added successfully");
+        System.out.println();
 
         List<Car> cars = carDAO.getAll();
         for (Car c : cars) {
