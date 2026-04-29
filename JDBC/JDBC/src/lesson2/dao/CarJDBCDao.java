@@ -98,7 +98,21 @@ public class CarJDBCDao implements CarDAO{
 
     @Override
     public void updatePrice(long id, int price) {
+        Connection connection = null;
+        connection = getConnection();
+        PreparedStatement preparedStatement = null;
 
+        try {
+            preparedStatement = connection.prepareStatement("update cars " +
+                                                                "set price = ? " +
+                                                                "where id = ?");
+            preparedStatement.setInt(1, price);
+            preparedStatement.setLong(2, id);
+            preparedStatement.execute();
+            System.out.println("A new price " + price + " has been set for car with an id " + id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -8,6 +8,13 @@ import lesson2.entity.Car;
 import java.util.List;
 
 public class TestLes2 {
+    private static void outputAll(CarDAO dao) {
+        List<Car> cars = dao.getAll();
+        for (Car c : cars) {
+            System.out.println(c);
+        }
+    }
+
     static void main() {
        IDAOFactory factory = DAOFactory.getInstance();
        CarDAO carDAO = factory.getCarDAO();
@@ -21,10 +28,11 @@ public class TestLes2 {
 
         System.out.println("Car added successfully");
         System.out.println();
+        outputAll(carDAO);
 
-        List<Car> cars = carDAO.getAll();
-        for (Car c : cars) {
-            System.out.println(c);
-        }
+        System.out.println();
+        carDAO.updatePrice(2, 2333);
+        System.out.println();
+        outputAll(carDAO);
     }
 }
