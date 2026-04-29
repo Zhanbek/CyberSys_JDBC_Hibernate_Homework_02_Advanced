@@ -117,7 +117,25 @@ public class CarJDBCDao implements CarDAO{
 
     @Override
     public void delete(String mark) {
+        Connection connection = null;
+        connection = getConnection();
+        PreparedStatement preparedStatement = null;
 
+        try {
+            int markId = getMarkId(mark, connection);
+
+            if(markId == -1){
+                System.out.println("The specified mark " + mark + " does not exist");
+                return;
+            }
+
+            preparedStatement = connection.prepareStatement("delete from cars where mark_id = ?");
+            preparedStatement.setInt(1, markId);
+            preparedStatement.execute();
+            System.out.println("Car with mark " + mark + " has been deleted");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private Connection getConnection() {

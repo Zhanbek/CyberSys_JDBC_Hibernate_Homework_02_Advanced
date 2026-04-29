@@ -21,8 +21,8 @@ public class TestLes2 {
 
        Car car = new Car();
         car.setMark("BMW");
-        car.setModel("X5");
-        car.setPrice(5800);
+        car.setModel("X6");
+        car.setPrice(15800);
 
         carDAO.add(car);
 
@@ -34,5 +34,11 @@ public class TestLes2 {
         carDAO.updatePrice(2, 2333);
         System.out.println();
         outputAll(carDAO);
+
+        System.out.println();
+        carDAO.delete("BMW");
+        System.out.println();
+        outputAll(carDAO);
+
     }
 }
